@@ -1,0 +1,20 @@
+{
+  "name": "syschain",
+  "version": "0.1.0",
+  "description": "simple blockchain to play araound",
+  "main": "index.js",
+  "dependencies": {
+    "crypto-js": "^4.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "crypto",
+    "blockchain",
+    "games"
+  ],
+  "author": "thomas.schagerl@gmx.net",
+  "license": "MIT"
+}
