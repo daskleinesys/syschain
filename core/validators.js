@@ -1,4 +1,4 @@
-const crypto = require('crypto-js');
+const { createHash } = require('crypto');
 
 const { NEW_BLOCK_MIN_TIME, NEW_BLOCK_MAX_TIME } = require('./constants.js');
 
@@ -66,9 +66,9 @@ function validateBlockFromPrevious(previousBlock, nextBlock) {
   }
 
   // validate hash connecting to previous block
-  const hash = crypto
-    .SHA256(`${previousBlock.rootHash}${nextBlock.createdAt}${nextBlock.rootHash}${nextBlock.nonce}`)
-    .toString(crypto.enc.Hex);
+  const hash = createHash('sha256')
+    .update(`${previousBlock.rootHash}${nextBlock.createdAt}${nextBlock.rootHash}${nextBlock.nonce}`)
+    .digest('hex');
   if (nextBlock.previousHash !== hash) {
     return false;
   }

@@ -1,5 +1,3 @@
-const crypto = require('crypto-js');
-
 const { NEW_BLOCK_MIN_TIME, NEW_BLOCK_MAX_TIME } = require('./core/constants.js');
 const createNextBlock = require('./core/mining.js');
 

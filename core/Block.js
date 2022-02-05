@@ -1,4 +1,4 @@
-const crypto = require('crypto-js');
+const { createHash } = require('crypto');
 
 class Block {
   /**
@@ -20,9 +20,9 @@ class Block {
     this.rootHash = rootHash;
     this.difficulty = difficulty;
     this.nonce = nonce;
-    this.previousHash = crypto
-      .SHA256(`${previousBlock.rootHash}${createdAt}${rootHash}${nonce}`)
-      .toString(crypto.enc.Hex);
+    this.previousHash = createHash('sha256')
+      .update(`${previousBlock.rootHash}${createdAt}${rootHash}${nonce}`)
+      .digest('hex');
   }
 }
 

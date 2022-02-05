@@ -1,4 +1,4 @@
-const crypto = require('crypto-js');
+const { createHash } = require('crypto');
 
 const Block = require('./Block.js');
 const { NEW_BLOCK_MIN_TIME, NEW_BLOCK_MAX_TIME } = require('./constants.js');
@@ -13,7 +13,7 @@ function createNextBlock(previousBlock) {
     difficulty += 1;
   }
   difficulty = Math.max(difficulty, 1);
-  const rootHash = crypto.SHA256(`hypothetical root hash data is current block height: ${previousBlock.height + 1}`).toString(crypto.enc.Hex);
+  const rootHash = createHash('sha256').update(`hypothetical root hash data is current block height: ${previousBlock.height + 1}`).digest('hex');
   let nonce = 1;
   let newBlock;
 

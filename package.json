@@ -5,7 +5,6 @@
   "main": "index.js",
   "dependencies": {
     "bitcoinjs-lib": "^6.0.1",
-    "crypto-js": "^4.1.1",
     "ecpair": "^2.0.1",
     "tiny-secp256k1": "^2.2.0"
   },
