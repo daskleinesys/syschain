@@ -4,9 +4,11 @@
   "description": "simple blockchain to play araound",
   "main": "index.js",
   "dependencies": {
-    "crypto-js": "^4.1.1"
+    "bitcoinjs-lib": "^6.0.1",
+    "crypto-js": "^4.1.1",
+    "ecpair": "^2.0.1",
+    "tiny-secp256k1": "^2.2.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
