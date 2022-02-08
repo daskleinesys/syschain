@@ -1,4 +1,10 @@
+const bitcoinjs = require('bitcoinjs-lib');
+const Buffer = require('buffer');
 const { createHash } = require('crypto');
+const ecc = require('tiny-secp256k1');
+const { ECPairFactory } = require('ecpair');
+
+const ECPair = ECPairFactory(ecc);
 
 const {
   NEW_BLOCK_MIN_TIME,
@@ -139,14 +145,15 @@ function validateBlockFromPrevious(previousBlock, nextBlock) {
 
 /**
  * Validates the given 'transaction'. This function
- * DOES NOT validate previous transactions. Only use a blockchain that
- * you know is valid (or validate it first).
+ * DOES NEITHER check if the "in" transactions exist NOR if they
+ * or unspent.
  *
  * @param transaction {Transaction}
+ * @param usedTransactionsById {Object}
  */
-function validteTransaction(transaction) {
-  // check the type
-  if (transacion == null) {
+function validteTransaction(transaction, usedTransactionsById) {
+  // check input
+  if (transaction == null || usedTransactionsById == null) {
     return false;
   }
   if (!validTransactions.includes(transaction.type)) {
@@ -189,13 +196,38 @@ function validteTransaction(transaction) {
     return false;
   }
 
-  // 1. validate every "in":
-  //   a. transactionId+index must exist and be unspent
-  //   b. validate publicKey and signature
+  // validate "ins"
+  if (transacion.in.some(({ transactionId, outIndex, publicKey, signature }) => {
+    const publicKeyBin = Buffer.from(publicKey, 'hex');
+    const ecPair = ECPair.fromPublicKey(publicKeyBin);
+    const { address } = bitcoinjs.payments.p2pkh({
+      pubkey: keyPair.publicKey,
+      network: BITCOINJS_NETWORK,
+    });
+    if (
+      usedTransactionsById[transactionId] == null
+      || !Array.isArray(usedTransactionsById[transactionId].out)
+      || usedTransactionsById[transactionId].out[outIndex] == null
+      || address !== usedTransactionsById[transactionId].out[outIndex].address
+      || !ecPair.verify(transaction.hash, signature)
+    ) {
+      return true;
+    }
+    return false;
+  })) {
+    return false;
+  }
+
   // 1. validate every "out":
-  //   a. valid resource
   //   b. valid address
   //   c. amount of all out resources must match the sum of all in resources
+}
+
+function validateTransactionUnspent(transaction, blockchain, transactionsForNextBlock) {
+  // validate for every "transaction.in" if
+  //   * it exists in blockchain
+  //   * it is not spent in blockchain
+  //   * it is not already used in transactionsForNextBlock (double spend!)
 }
 
 module.exports = {
