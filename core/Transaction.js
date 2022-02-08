@@ -147,7 +147,7 @@ class Transaction {
         type,
         createdAt,
         in.reduce(({ transactionId, outIndex }) => [transactionId, outIndex].join('.')),
-        out.reduce(({ resource, amount, publicKey }) => [resource, amount, publicKey].join('.')),
+        out.reduce(({ resource, amount, address }) => [resource, amount, address].join('.')),
       ].join('.'))
       .digest('hex');
   }
